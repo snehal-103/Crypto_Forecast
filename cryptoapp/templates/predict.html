@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto Prediction</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #282828; /* 80% Dark Gray */
+            color: white; /* Ensure text is visible */
+        }
+        .card {
+            background-color: #0d0d0d; /* 5% Black */
+            color: white;
+            border: 2px solid #FFD700; /* 15% Yellow */
+        }
+        .prediction-result {
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 8px;
+            background-color: #FFD700; /* 15% Yellow */
+            color: #0d0d0d; /* 5% Black */
+        }
+        .btn-home, .btn-primary {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            background-color: #FFD700; /* 15% Yellow */
+            color: #0d0d0d; /* 5% Black */
+            border: none;
+        }
+        .btn-home a, .btn-primary {
+            color: #0d0d0d !important;
+        }
+        .btn-primary:hover, .btn-home a:hover {
+            background-color: #E6C200; /* Slightly darker yellow */
+        }
+    </style>
+</head>
+<body>
+
+<div class="container mt-5">
+    <div class="card mx-auto" style="max-width: 600px;">
+        <div class="card-body">
+            <h3 class="text-center">Crypto Price Prediction</h3>
+            <form method="POST">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="crypto_symbol" class="form-label">Select Cryptocurrency:</label>
+                    <select name="crypto_symbol" class="form-select">
+                        <option value="">-- Select Cryptocurrency --</option>
+                        <option value="BTC-USD" {% if selected_crypto == "BTC-USD" %}selected{% endif %}>Bitcoin (BTC)</option>
+                        <option value="ETH-USD" {% if selected_crypto == "ETH-USD" %}selected{% endif %}>Ethereum (ETH)</option>
+                        <option value="DOGE-USD" {% if selected_crypto == "DOGE-USD" %}selected{% endif %}>Dogecoin (DOGE)</option>
+                    </select>                    
+                </div>
+                <div class="mb-3">
+                    <label for="prediction_days" class="form-label">Predict for:</label>
+                    <select name="prediction_days" class="form-select">
+                        <option value="">-- Select Prediction Period --</option>
+                        <option value="0.5" {% if prediction_period == 0.5 %}selected{% endif %}>Next 30 Minutes</option>
+                        <option value="1" {% if prediction_period == 1 %}selected{% endif %}>Next 1 Hour</option>
+                        <option value="10" {% if prediction_period == 10 %}selected{% endif %}>Next 10 Hours</option>
+                        <option value="24" {% if prediction_period == 24 %}selected{% endif %}>Next Day</option>
+                        <option value="168" {% if prediction_period == 168 %}selected{% endif %}>Next Week</option>
+                        <option value="720" {% if prediction_period == 720 %}selected{% endif %}>Next Month</option>
+                        <option value="8760" {% if prediction_period == 8760 %}selected{% endif %}>Next Year</option>
+                    </select>
+                </div>                
+                <button type="submit" class="btn btn-primary w-100">Show Prediction</button>
+            </form>
+
+            {% if predicted_price is not None %}
+            <div class="prediction-result">
+                Prediction for {{ selected_crypto }} in 
+                {% if prediction_period == 0.5 %}
+                    30 minutes
+                {% elif prediction_period == 1 %}
+                    1 hour
+                {% elif prediction_period < 24 %}
+                    {{ prediction_period }} hours
+                {% elif prediction_period < 168 %}
+                    {{ prediction_period|divisibleby:24|yesno:"1 day,days" }}
+                {% elif prediction_period < 720 %}
+                    {{ prediction_period|divisibleby:168|yesno:"1 week,weeks" }}
+                {% elif prediction_period < 8760 %}
+                    {{ prediction_period|divisibleby:720|yesno:"1 month,months" }}
+                {% else %}
+                    {{ prediction_period|divisibleby:8760|yesno:"1 year,years" }}
+                {% endif %}
+                : ${{ predicted_price }}
+            </div>                        
+            {% endif %}
+
+            <!-- Home Button -->
+            <div class="btn-home">
+                <a href="{% url 'home' %}" class="btn w-100">Back to Home</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

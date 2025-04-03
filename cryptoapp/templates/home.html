@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto Forecast</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* General Styling */
+        body {
+            background: #181818; /* Dark Gray */
+            color: #EAEAEA; /* Light Gray */
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .logo {
+            width: 120px; /* Adjust size as needed */
+        }
+
+        .site-title {
+            font-size: 28px;
+            font-weight: bold;
+            color: #FFD700; /* Gold */
+            margin-top: 10px;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: #222222;
+            padding: 10px;
+            border-radius: 10px;
+        }
+
+        .header-btn {
+            background: linear-gradient(135deg, #2E86C1, #1B4F72);
+            border: none;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 8px;
+            margin: 0 7px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .header-btn:hover {
+            background: linear-gradient(135deg, #1B4F72, #2E86C1);
+            transform: translateY(-2px);
+            opacity: 0.9;
+        }
+
+        /* Crypto Cards */
+        .crypto-card {
+            background: #292929;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            transition: 0.3s;
+            color: #FFD700;
+        }
+
+        .crypto-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0px 4px 15px rgba(255, 215, 0, 0.3);
+        }
+
+        /* FAQ Section */
+        .faq-box {
+            background: #333333;
+            padding: 15px;
+            border-radius: 12px;
+            margin-top: 20px;
+            transition: 0.3s;
+        }
+
+        .faq-box:hover {
+            background: #3A3A3A;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 15px;
+            background: #222222;
+            border-radius: 10px;
+            color: #FFD700;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Website Logo and Name -->
+<div class="container mt-3">
+    <div class="d-flex align-items-center">
+        <img src="static/images/icon.jpg" alt="Crypto Forecast Logo" class="logo" style="width: 16px; height: 16px;">
+        <h1 class="site-title text-center flex-grow-1">Crypto Forecast</h1>
+    </div>
+</div>
+
+
+<!-- Navigation Bar -->
+<nav class="navbar navbar-expand-lg">
+    <div class="container">
+        <div class="mx-auto text-center">
+            <a href="{% url 'home' %}" class="header-btn">Home</a>
+            <a href="{% url 'news' %}" class="header-btn">Crypto News</a>
+            {% if user.is_authenticated %}
+                <span class="me-3">👋 Welcome, <strong>{{ user.username }}</strong>!</span>
+                <a href="{% url 'logout' %}" class="header-btn">Logout</a>
+            {% else %}
+                <a href="{% url 'login' %}" class="header-btn">Login</a>
+                <a href="{% url 'register' %}" class="header-btn">Register</a>
+            {% endif %}
+        </div>
+    </div>
+</nav>
+
+<!-- Crypto Prices Section -->
+<div class="container mt-5">
+    <h2 class="text-center">📈 Live Cryptocurrency Prices</h2>
+    <div class="row mt-4">
+        {% for crypto in crypto_data %}
+            <div class="col-md-4">
+                <div class="crypto-card">
+                    <h4>{{ crypto.symbol }}</h4>
+                    <h2>$ {{ crypto.price }}</h2>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Information Section -->
+<div class="container mt-5">
+    <h2 class="text-center">📚 Cryptocurrency Insights</h2>
+
+    <div class="faq-box">
+        <h5>💡 What is cryptocurrency price prediction?</h5>
+        <p>
+            Cryptocurrency price prediction involves analyzing market trends, historical data, and economic factors
+            to forecast the potential value of cryptocurrencies. However, due to volatility, absolute certainty is challenging.
+        </p>
+    </div>
+
+    <div class="faq-box">
+        <h5>📊 How does crypto price forecasting work?</h5>
+        <p>
+            It relies on machine learning, technical analysis, and market sentiment. Various models like SVM (Support Vector Machines) help in making predictions based on past patterns.
+        </p>
+    </div>
+
+    <div class="faq-box">
+        <h5>🔮 Can we accurately predict crypto prices?</h5>
+        <p>
+            No prediction method is 100% accurate due to market fluctuations, news impact, and regulatory changes. Forecasting helps estimate trends rather than precise values.
+        </p>
+    </div>
+
+    <div class="faq-box text-center">
+        <h5> Want to check future predictions?</h5>
+        <p>Click below to see AI-driven price forecasts for Bitcoin, Ethereum, and more!</p>
+        <a href="{% url 'predict' %}" 
+   style="background: linear-gradient(135deg, #ff0066, #cc0000); 
+          color: white; 
+          padding: 12px 24px; 
+          border-radius: 8px; 
+          font-size: 16px; 
+          font-weight: bold; 
+          text-decoration: none; 
+          display: inline-block;
+          transition: all 0.3s ease-in-out;"
+   onmouseover="this.style.background='linear-gradient(135deg, #cc0000, #ff0066)'"
+   onmouseout="this.style.background='linear-gradient(135deg, #ff0066, #cc0000)'">
+   Check Predictions
+</a>
+         </div>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+    <p>&copy; 2025 Crypto Forecast | Built for Future Predictions.</p>
+</div>
+
+</body>
+</html>

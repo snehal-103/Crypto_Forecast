@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Crypto News</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #333333; /* 80% Dark Gray */
+            color: #FFD700; /* 15% Yellow */
+            text-align: center;
+            padding: 20px;
+        }
+
+        h1 {
+            font-weight: bold;
+            color: #FFD700;
+        }
+
+        .news-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #444444; /* Slightly lighter dark gray */
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .news-item {
+            background: #555555; /* Dark Gray */
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .news-item:hover {
+            background: #666666;
+        }
+
+        footer {
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+            background-color: #000000; /* 5% Black */
+            color: #FFD700;
+            text-align: center;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Latest Cryptocurrency News</h1>
+    <p>Here you will find updates on cryptocurrency trends.</p>
+    
+    <div class="news-container" id="news-container">
+        <p>Loading latest crypto news...</p>
+    </div>
+    
+    <footer style="position: fixed; width: 100%; left: 0; bottom: 0; background-color: #000000; color: #FFD700; text-align: center; padding: 10px; box-sizing: border-box;">
+        &copy; 2025 Crypto Forecast | Stay Updated with the Latest News.
+    </footer>
+    
+    <script>
+        async function fetchCryptoNews() {
+            const apiKey = 'eeb3f76fff5946f2a7757a6eabae2da4'; // Replace with your actual Coinfeeds API key
+            const url = `https://api.coinfeeds.io/v1/news?token=${apiKey}`;
+
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                const newsContainer = document.getElementById('news-container');
+
+                // Clear previous content
+                newsContainer.innerHTML = '';
+
+                if (!data || !data.data || data.data.length === 0) {
+                    newsContainer.innerHTML = '<p>No news available at the moment.</p>';
+                    return;
+                }
+
+                // Loop through the top 5 news articles
+                data.data.slice(0, 5).forEach(article => {
+                    const newsItem = document.createElement('div');
+                    newsItem.className = 'news-item';
+                    newsItem.innerHTML = `
+                        <h3>${article.title}</h3>
+                        <p>${article.description || 'No description available.'}</p>
+                        <a href="${article.url}" target="_blank" style="color: yellow;">Read More</a>
+                    `;
+                    newsContainer.appendChild(newsItem);
+                });
+            } catch (error) {
+                console.error('Error fetching news:', error);
+                document.getElementById('news-container').innerHTML = '<p>Failed to load news.</p>';
+            }
+        }
+
+        // Fetch news when the page loads
+        window.onload = fetchCryptoNews;
+    </script>
+</body>
+</html>
