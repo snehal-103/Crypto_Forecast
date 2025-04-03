@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-o#n5=)ba^z4c^0#*9g$fxgxkckij3gbxt=d17foe^=4i!8qz0^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '10.243.46.225']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '10.243.46.225',"crypto-forecast.onrender.com",]
 
 
 # Application definition
