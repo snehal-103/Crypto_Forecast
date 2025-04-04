@@ -1,0 +1,17 @@
+# Ignore Python virtual environment
+venv/
+
+# Ignore compiled Python files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignore database files
+db.sqlite3
+
+# Ignore machine learning model files
+svm_model.pkl
+
+# Ignore system files
+.DS_Store
